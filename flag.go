@@ -138,6 +138,10 @@ type FlagSet struct {
 	// help/usage messages.
 	SortFlags bool
 
+	// ShowZeroValue is used to indicate, if user wants to show zero value in
+	// help/usage messages.
+	ShowZeroValue bool
+
 	name              string
 	parsed            bool
 	actual            map[NormalizedName]*Flag
@@ -693,7 +697,7 @@ func (f *FlagSet) FlagUsagesWrapped(cols int) string {
 		}
 
 		line += usage
-		if !flag.defaultIsZeroValue() {
+		if f.ShowZeroValue || !flag.defaultIsZeroValue() {
 			if flag.Value.Type() == "string" {
 				line += fmt.Sprintf(" (default %q)", flag.DefValue)
 			} else {
